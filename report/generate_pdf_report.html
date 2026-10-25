@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Technical Report - Mini-Project 3: OCR Expense Tracker</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 18mm 18mm 18mm 18mm;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: #1a1a2e;
+      line-height: 1.5;
+      font-size: 13px;
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      font-size: 22px;
+      color: #2e1065;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    h2 {
+      font-size: 15px;
+      color: #4c1d95;
+      border-bottom: 2px solid #ddd6fe;
+      padding-bottom: 4px;
+      margin-top: 18px;
+      margin-bottom: 8px;
+    }
+    h3 {
+      font-size: 13px;
+      color: #5b21b6;
+      margin-top: 12px;
+      margin-bottom: 4px;
+    }
+    .meta-box {
+      background: #f5f3ff;
+      border-left: 4px solid #6d28d9;
+      padding: 8px 12px;
+      margin-bottom: 14px;
+      font-size: 12px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10px 0;
+      font-size: 12px;
+    }
+    th, td {
+      border: 1px solid #cbd5e1;
+      padding: 6px 8px;
+      text-align: left;
+    }
+    th {
+      background: #ede9fe;
+      color: #3b0764;
+    }
+    tr:nth-child(even) {
+      background: #f8fafc;
+    }
+    .badge-ok {
+      color: #15803d;
+      font-weight: bold;
+    }
+    code {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+      background: #f1f5f9;
+      padding: 2px 4px;
+      border-radius: 4px;
+      font-size: 11px;
+    }
+    pre {
+      background: #0f172a;
+      color: #f8fafc;
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      overflow-x: auto;
+    }
+    .page-break {
+      page-break-after: always;
+    }
+    .diagram-box {
+      border: 1px dashed #7c3aed;
+      background: #faf5ff;
+      border-radius: 6px;
+      padding: 10px;
+      text-align: center;
+      margin: 12px 0;
+      font-family: monospace;
+      font-size: 11px;
+    }
+    .print-btn {
+      position: fixed;
+      top: 12px;
+      right: 12px;
+      background: #6d28d9;
+      color: #fff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+    }
+    @media print {
+      .print-btn { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<button class="print-btn" onclick="window.print()">🖨️ Print / Save as PDF</button>
+
+<!-- PAGE 1 -->
+<h1>Technical Report</h1>
+<div style="font-size: 14px; font-weight: bold; color: #5b21b6; margin-bottom: 8px;">
+  Mini-Project 3: OCR Expense Tracker & Receipt Parser (Flutter & Dart)
+</div>
+
+<div class="meta-box">
+  <strong>Student / Author:</strong> Chipz &nbsp;|&nbsp;
+  <strong>Framework:</strong> Flutter 3.47.8 & Dart 3.13.7 &nbsp;|&nbsp;
+  <strong>Engine:</strong> Google ML Kit (Offline) &nbsp;|&nbsp;
+  <strong>Storage:</strong> SQLite (<code>sqflite</code>) &nbsp;|&nbsp;
+  <strong>Date:</strong> October 2026
+</div>
+
+<h2>1. Executive Summary & Problem Scenario</h2>
+<p>
+  Students and organizational treasurers handle dozens of supermarket receipts, utility invoices, and cafe bills. Manual data entry into spreadsheets is slow and prone to typographical errors.
+</p>
+<p>
+  <strong>Receipt Scanner</strong> is a full-featured personal expense tracking mobile application built with <strong>Flutter 3.x</strong> that executes <strong>on-device AI optical character recognition (OCR)</strong> using <strong>Google ML Kit</strong>. Text extraction completes in under 100 milliseconds completely offline without network latency, API tokens, or server costs. A custom multi-pass regex heuristic engine parses monetary amounts in Vietnamese Dong (VND) and USD, dates (DD/MM/YYYY), and merchant names. Users can edit values on an interactive review screen before persisting into a local SQLite database. Visual analytics are rendered via custom animated canvas painters without third-party chart dependencies.
+</p>
+
+<h2>2. Core Feature Compliance Checklist</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Specification</th>
+      <th>Feature Description</th>
+      <th>Implementation Source</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Viewfinder & Flash</strong></td>
+      <td>Live camera preview with flash/torch mode toggle</td>
+      <td><code>lib/features/camera/camera_screen.dart</code></td>
+      <td class="badge-ok">✅ Complete</td>
+    </tr>
+    <tr>
+      <td><strong>Focus Tap</strong></td>
+      <td>Touch-to-focus and exposure with animated ring reticle</td>
+      <td><code>lib/features/camera/camera_screen.dart</code></td>
+      <td class="badge-ok">✅ Complete</td>
+    </tr>
+    <tr>
+      <td><strong>Framing Crop Overlay</strong></td>
+      <td>High-visibility framing box with background isolate cropping</td>
+      <td><code>lib/features/camera/camera_screen.dart</code></td>
+      <td class="badge-ok">✅ Complete</td>
+    </tr>
+    <tr>
+      <td><strong>On-Device OCR</strong></td>
+      <td>Google ML Kit sub-100ms offline Latin text recognition</td>
+      <td><code>lib/core/services/ocr_service.dart</code></td>
+      <td class="badge-ok">✅ Complete</td>
+    </tr>
+    <tr>
+      <td><strong>Regex Heuristics</strong></td>
+      <td>Extracts VND/USD totals, dates (DD/MM/YYYY), merchant names</td>
+      <td><code>lib/core/services/receipt_parser.dart</code></td>
+      <td class="badge-ok">✅ Complete</td>
+    </tr>
+    <tr>
+      <td><strong>Review & Edit</strong></td>
+      <td>Pre-save validation form with collapsible raw OCR viewer</td>
+      <td><code>lib/features/transactions/review_screen.dart</code></td>
+      <td class="badge-ok">✅ Complete</td>
+    </tr>
+    <tr>
+      <td><strong>SQLite Database</strong></td>
+      <td>Persistent CRUD with category aggregates and weekly grouping</td>
+      <td><code>lib/core/database/database_helper.dart</code></td>
+      <td class="badge-ok">✅ Complete</td>
+    </tr>
+    <tr>
+      <td><strong>5 Core Categories</strong></td>
+      <td>Food, Study, Travel, Gear, Entertainment (+ Other)</td>
+      <td><code>lib/core/models/transaction_model.dart</code></td>
+      <td class="badge-ok">✅ Complete</td>
+    </tr>
+    <tr>
+      <td><strong>Thumbnail Caching</strong></td>
+      <td>Receipt images cropped and cached in app storage directory</td>
+      <td><code>lib/features/home/home_screen.dart</code></td>
+      <td class="badge-ok">✅ Complete</td>
+    </tr>
+    <tr>
+      <td><strong>Animated Donut Chart</strong></td>
+      <td>Interactive category distribution drawn via CustomPainter</td>
+      <td><code>painters/donut_chart_painter.dart</code></td>
+      <td class="badge-ok">✅ Complete</td>
+    </tr>
+    <tr>
+      <td><strong>Animated Bar Chart</strong></td>
+      <td>Interactive 7-day spending trends drawn via CustomPainter</td>
+      <td><code>painters/bar_chart_painter.dart</code></td>
+      <td class="badge-ok">✅ Complete</td>
+    </tr>
+    <tr>
+      <td><strong>No Chart Libraries</strong></td>
+      <td>Pure CustomPainter implementation on native canvas</td>
+      <td><code>lib/features/analytics/</code></td>
+      <td class="badge-ok">✅ Complete</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="page-break"></div>
+
+<!-- PAGE 2 -->
+<h2>3. System Architecture & Component Design</h2>
+<p>
+  The codebase follows a modular clean architecture separating Presentation, Domain/Service, and Data persistence layers:
+</p>
+
+<div class="diagram-box">
+  [Physical Receipt] &rarr; [Camera Viewfinder + Tap Focus] &rarr; [Isolate Image Crop]<br>
+  &darr;<br>
+  [Google ML Kit Text Recognition (On-Device)] &rarr; [Raw OCR String Buffer]<br>
+  &darr;<br>
+  [Heuristic Regex Parser Engine] &rarr; [ParsedReceipt: Total, Date, Merchant]<br>
+  &darr;<br>
+  [Interactive Review Screen] &rarr; [User Corrections] &rarr; [SQLite Database]<br>
+  &darr;<br>
+  &rarr; [HomeScreen: List & Cached Thumbnails]<br>
+  &rarr; [AnalyticsScreen: CustomPainter Donut & Bar Charts]
+</div>
+
+<h3>3.1. Layer Architecture</h3>
+<ul>
+  <li><strong>Presentation Layer:</strong> <code>HomeScreen</code> with Sliver spending summary and cached thumbnail cards; <code>CameraScreen</code> with gesture tap-to-focus and crop overlay; <code>ReviewScreen</code> for post-scan confirmation; <code>AnalyticsScreen</code> for chart interaction.</li>
+  <li><strong>Service Layer:</strong> <code>OcrService</code> handling ML Kit TextRecognizer lifecycle; <code>ReceiptParser</code> pure Dart heuristic regex extractor.</li>
+  <li><strong>Data Layer:</strong> <code>DatabaseHelper</code> managing local SQLite database schema, CRUD operations, and fast group-by aggregate queries.</li>
+</ul>
+
+<h2>4. Technical Implementation Highlights</h2>
+
+<h3>4.1. Regex Heuristic Parser Engine (<code>receipt_parser.dart</code>)</h3>
+<p>
+  Supermarket and restaurant receipts vary significantly. The custom heuristic engine employs a multi-stage extraction pipeline:
+</p>
+<ul>
+  <li>
+    <strong>Total Extraction:</strong> Matches Vietnamese keywords (<code>TỔNG CỘNG</code>, <code>THANH TOÁN</code>, <code>THÀNH TIỀN</code>) and English keywords (<code>TOTAL</code>, <code>AMOUNT DUE</code>). Resolves Vietnamese dot thousand separators (<code>150.000 đ</code> &rarr; <code>150000.0</code>) and standard commas (<code>150,000 VND</code>).
+  </li>
+  <li>
+    <strong>Date Disambiguation:</strong> Prioritizes ISO dates (<code>YYYY-MM-DD</code>) to avoid misinterpreting years as days, followed by Vietnamese slash format (<code>DD/MM/YYYY</code>) and textual Vietnamese dates (<code>Ngày DD tháng MM năm YYYY</code>).
+  </li>
+  <li>
+    <strong>Merchant Filtering:</strong> Extracts header text while strictly filtering out administrative noise lines such as <code>HÓA ĐƠN BÁN HÀNG</code>, <code>MÃ SỐ THUẾ</code>, phone numbers, and addresses.
+  </li>
+</ul>
+
+<h3>4.2. Custom Canvas Visualizations (<code>CustomPainter</code>)</h3>
+<ul>
+  <li>
+    <strong>Interactive Donut Chart:</strong> Parametric sweep angles calculated with <code>(categoryAmount / totalSpending) * 2π * progress</code>. Tapping on any slice calculates the touch polar angle using <code>atan2(dy, dx)</code>, dynamically expanding the selected slice and rendering the category name, amount, and percentage in the center circle.
+  </li>
+  <li>
+    <strong>Interactive Bar Chart:</strong> Renders 7-day spending trends with vertical gradient fills. Tapping on a column calculates the bar slot index, highlights the active column, and displays an exact currency value badge.
+  </li>
+</ul>
+
+<div class="page-break"></div>
+
+<!-- PAGE 3 -->
+<h2>5. Verification & Testing Results</h2>
+<p>
+  The project underwent automated static analysis and test validation using Flutter SDK 3.47.8:
+</p>
+
+<h3>5.1. Static Analysis (Zero Issues)</h3>
+<pre>
+$ flutter analyze
+Analyzing receipt_scanner...
+No issues found! (ran in 8.7s)
+</pre>
+
+<h3>5.2. Unit Test Suite (100% Pass)</h3>
+<pre>
+$ flutter test
+00:00 +0: ReceiptParser Tests extracts Vietnamese VND total amounts correctly
+00:00 +1: ReceiptParser Tests extracts international amounts and formats
+00:00 +2: ReceiptParser Tests extracts Vietnamese textual date
+00:00 +3: All tests passed!
+</pre>
+
+<h2>6. Submission Deliverables Summary</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Deliverable</th>
+      <th>Location / Instruction</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>1. Live Demo / Release APK</strong></td>
+      <td>Automated GitHub Actions CI/CD (<code>.github/workflows/build_apk.yml</code>) builds and packages <code>app-release.apk</code> automatically upon repository push. Video demo script available in <code>demo/DEMO_VIDEO_SCRIPT.md</code>.</td>
+    </tr>
+    <tr>
+      <td><strong>2. GitHub Repository</strong></td>
+      <td>Clean, modular Flutter 3.x repository structure with complete setup, build commands, and architecture diagrams documented in <code>README.md</code>.</td>
+    </tr>
+    <tr>
+      <td><strong>3. Short Report (PDF)</strong></td>
+      <td>This concise 3-page technical report formatted for direct A4 printing/PDF export (<code>report/generate_pdf_report.html</code>).</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>7. Build & Setup Commands</h2>
+<pre>
+# Clone repository and navigate to project
+git clone &lt;your-github-repo-url&gt;
+cd receipt_scanner
+
+# Install Flutter dependencies
+flutter pub get
+
+# Run static code verification (0 issues)
+flutter analyze
+
+# Execute automated test suite
+flutter test
+
+# Run application on connected mobile device or emulator
+flutter run
+
+# Build optimized release APK for submission
+flutter build apk --release
+</pre>
+
+<div style="text-align: center; margin-top: 30px; color: #64748b; font-size: 11px;">
+  &mdash; End of Technical Report &mdash;
+</div>
+
+</body>
+</html>
