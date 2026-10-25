@@ -36,7 +36,7 @@ Students, club treasurers, and individuals frequently accumulate physical superm
 
 ## 📋 Core Functional Specifications & Feature Matrix
 
-| Feature | Implementation Details | Status |
+| Feature | Implementation Details | 
 | :--- | :--- | :---: |
 | 📸 **Live Viewfinder & Flash** | Camera viewfinder with real-time torch/flash mode toggling 
 | 🎯 **Focus Tap** | Touch-to-focus and exposure with animated golden focus reticle 
