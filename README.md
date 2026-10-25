@@ -36,20 +36,19 @@ Students, club treasurers, and individuals frequently accumulate physical superm
 
 ## 📋 Core Functional Specifications & Feature Matrix
 
-| Feature | Implementation Details | 
-| :--- | :--- | :---: |
-| 📸 **Live Viewfinder & Flash** | Camera viewfinder with real-time torch/flash mode toggling 
-| 🎯 **Focus Tap** | Touch-to-focus and exposure with animated golden focus reticle 
-| 🔲 **Framing Crop Overlay** | Cutout framing overlay with isolate-based image cropping 
-| 🤖 **On-Device OCR** | Google ML Kit text recognition (offline, sub-100ms, 0 cloud cost) 
-| 🧠 **Regex Heuristic Parser** | Multi-pass regex for VND (`150.000 đ`, `150,000 VND`), USD, and dates 
-| ✏️ **Interactive Review** | Review & edit merchant, amount, category, date, and raw OCR text 
-| 🗄️ **Persistent SQLite Storage** | Full CRUD, date filtering, and category aggregates via `sqflite` 
-| 🏷️ **Category Classification** | Food, Study, Travel, Gear, Entertainment, and Other 
-| 🖼️ **Receipt Thumbnail Caching** | Local application storage caching with list item preview thumbnails 
-| 🍩 **Interactive Donut Chart** | Animated category distribution drawn via CustomPainter with slice tap 
-| 📊 **Interactive Bar Chart** | Animated 7-day spending trend with bar tap selection and value badges 
-| 🚫 **No 3rd-Party Chart Libraries**| 100% Canvas math (`CustomPainter`) for all graphs 
+
+📸 **Live Viewfinder & Flash** | Camera viewfinder with real-time torch/flash mode toggling 
+🎯 **Focus Tap** | Touch-to-focus and exposure with animated golden focus reticle 
+🔲 **Framing Crop Overlay** | Cutout framing overlay with isolate-based image cropping 
+🤖 **On-Device OCR** | Google ML Kit text recognition (offline, sub-100ms, 0 cloud cost) 
+🧠 **Regex Heuristic Parser** | Multi-pass regex for VND (`150.000 đ`, `150,000 VND`), USD, and dates 
+✏️ **Interactive Review** | Review & edit merchant, amount, category, date, and raw OCR text 
+🗄️ **Persistent SQLite Storage** | Full CRUD, date filtering, and category aggregates via `sqflite` 
+🏷️ **Category Classification** | Food, Study, Travel, Gear, Entertainment, and Other 
+🖼️ **Receipt Thumbnail Caching** | Local application storage caching with list item preview thumbnails 
+🍩 **Interactive Donut Chart** | Animated category distribution drawn via CustomPainter with slice tap 
+📊 **Interactive Bar Chart** | Animated 7-day spending trend with bar tap selection and value badges 
+🚫 **No 3rd-Party Chart Libraries**| 100% Canvas math (`CustomPainter`) for all graphs 
 
 ---
 
